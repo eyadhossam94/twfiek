@@ -86,32 +86,9 @@ class _HomeState extends State<Home> {
             },
             child: Row(
               children: [
-                // Avatar with gradient ring
-                Container(
-                  padding: const EdgeInsets.all(2),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [_brand, Color(0xFFFF4D6D)],
-                    ),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: ClipOval(
-                      child: Image.asset(
-                        "assets/icon/user.png",
-                        width: 36,
-                        height: 36,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                const Hero(
+                  tag: ProfileAvatar.heroTag,
+                  child: ProfileAvatar(size: 40),
                 ),
             
                 const SizedBox(width: 12),
