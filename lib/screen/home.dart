@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:twfiek/app%20%20widgets/auth_widgets.dart';
 import 'package:twfiek/screen/profile.dart';
+import 'package:twfiek/screen/category_page.dart';
+import 'package:twfiek/screen/utility_pages.dart';
 import 'package:twfiek/shared/big_card.dart';
 import 'package:twfiek/shared/small_card.dart';
 import 'package:twfiek/shared/textfield_search.dart';
@@ -21,6 +23,7 @@ class _HomeState extends State<Home> {
 
   // Shows the little dot on the notification button.
   final bool _hasUnread = true;
+  String _searchQuery = '';
 
   // -1 = nothing selected. Tap the same company again to deselect it.
   int _selectedCompany = -1;
@@ -141,7 +144,7 @@ class _HomeState extends State<Home> {
             child: _IconBox(
               asset: "assets/icon/notification.png",
               showDot: _hasUnread,
-              onTap: () {},
+              onTap: () => Navigator.of(context).push(fadeRoute(const NotificationsPage())),
             ),
           ),
           const SizedBox(width: 10),
@@ -150,7 +153,7 @@ class _HomeState extends State<Home> {
             child: _IconBox(
               asset: "assets/icon/shopping-cart.png",
               tint: _brand,
-              onTap: () {},
+              onTap: () => Navigator.of(context).push(fadeRoute(const CartPage())),
             ),
           ),
           const SizedBox(width: 20),
@@ -180,7 +183,7 @@ class _HomeState extends State<Home> {
                   child: SearchField(
                     controller: searchController,
                     onChanged: (value) {
-                      debugPrint(value);
+                      setState(() => _searchQuery = value.trim().toLowerCase());
                     },
                   ),
                 ),
@@ -204,9 +207,9 @@ class _HomeState extends State<Home> {
                   scrollDirection: Axis.horizontal,
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 8),
-                  itemCount: _companies.length,
+                  itemCount: _companies.where((c) => c.title.toLowerCase().contains(_searchQuery)).length,
                   itemBuilder: (context, i) {
-                    final company = _companies[i];
+                    final company = _companies.where((c) => c.title.toLowerCase().contains(_searchQuery)).toList()[i];
                     return Center(
                       child: SmallCard(
                         index: i,
@@ -234,7 +237,7 @@ class _HomeState extends State<Home> {
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(24, 4, 24, 30),
               sliver: SliverGrid.builder(
-                itemCount: _categories.length,
+                itemCount: _categories.where((c) => c.title.toLowerCase().contains(_searchQuery)).length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 16,
@@ -244,12 +247,17 @@ class _HomeState extends State<Home> {
                   childAspectRatio: 0.78,
                 ),
                 itemBuilder: (context, i) {
-                  final category = _categories[i];
+                  final category = _categories.where((c) => c.title.toLowerCase().contains(_searchQuery)).toList()[i];
                   return BigCard(
                     index: i % 2, // 2 columns -> stagger per row
                     margin: EdgeInsets.zero,
                     image: category.image,
                     title: category.title,
+                    onTap: () => Navigator.of(context).push(fadeRoute(CategoryPage(
+                      title: category.title,
+                      image: category.image,
+                      company: _selectedCompany >= 0 ? _companies[_selectedCompany].title : null,
+                    ))),
                   );
                 },
               ),
