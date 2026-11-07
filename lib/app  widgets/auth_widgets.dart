@@ -12,7 +12,6 @@ class AuthColors {
   static const error = Color(0xFFFF8A80);
 }
 
-/// Fade transition used when switching between Login and Sign up.
 Route<T> fadeRoute<T>(Widget page) {
   return PageRouteBuilder<T>(
     transitionDuration: const Duration(milliseconds: 300),
@@ -29,12 +28,11 @@ class AuthValidators {
 
   static String? email(String? v) {
     if (v == null || v.trim().isEmpty) return 'Enter your email';
-    final ok = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(v.trim());
+    final ok = RegExp(r'^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$').hasMatch(v.trim());
     return ok ? null : 'Enter a valid email';
   }
 }
 
-/// Shared page frame: logo on top, dark card with the toggle, footer below.
 class AuthLayout extends StatelessWidget {
   const AuthLayout({
     super.key,
@@ -46,13 +44,12 @@ class AuthLayout extends StatelessWidget {
 
   final bool isLogin;
   final VoidCallback onSwitch;
-  final Widget child; // form + button
-  final Widget footer; // switch row under the card
+  final Widget child;
+  final Widget footer;
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -63,7 +60,12 @@ class AuthLayout extends StatelessWidget {
               SizedBox(
                 height: height * 0.18,
                 child: const Center(
-                  child:Image(image: AssetImage("assets/logo/Glossy Purple and Gold Arabic Wordmark.png"),width: 200,)
+                  child: Image(
+                    image: AssetImage(
+                      'assets/logo/Glossy Purple and Gold Arabic Wordmark.png',
+                    ),
+                    width: 200,
+                  ),
                 ),
               ),
               Container(
@@ -91,10 +93,8 @@ class AuthLayout extends StatelessWidget {
   }
 }
 
-/// Login | Sign up pill. Tapping the inactive tab calls [onSwitch].
 class AuthToggle extends StatefulWidget {
   const AuthToggle({super.key, required this.isLogin, required this.onSwitch});
-
   final bool isLogin;
   final VoidCallback onSwitch;
 
@@ -103,7 +103,6 @@ class AuthToggle extends StatefulWidget {
 }
 
 class _AuthToggleState extends State<AuthToggle> {
-  // Starts on the opposite side, then slides to the current page's side.
   late bool _atLogin = !widget.isLogin;
 
   @override
@@ -141,12 +140,7 @@ class _AuthToggleState extends State<AuthToggle> {
               ),
             ),
           ),
-          Row(
-            children: [
-              _tab('Login', true),
-              _tab('Sign up', false),
-            ],
-          ),
+          Row(children: [_tab('Login', true), _tab('Sign up', false)]),
         ],
       ),
     );
@@ -174,7 +168,6 @@ class _AuthToggleState extends State<AuthToggle> {
   }
 }
 
-/// Bold label + underline-only input.
 class AuthField extends StatelessWidget {
   const AuthField({
     super.key,
@@ -249,7 +242,6 @@ class PasswordToggleButton extends StatelessWidget {
     required this.hidden,
     required this.onPressed,
   });
-
   final bool hidden;
   final VoidCallback onPressed;
 
@@ -269,10 +261,16 @@ class PasswordToggleButton extends StatelessWidget {
 }
 
 class AuthButton extends StatelessWidget {
-  const AuthButton({super.key, required this.text, required this.onPressed, required loading});
+  const AuthButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+    this.loading = false,
+  });
 
   final String text;
   final VoidCallback onPressed;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
@@ -280,25 +278,37 @@ class AuthButton extends StatelessWidget {
       width: double.infinity,
       height: 48,
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: loading ? null : onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: AuthColors.button,
           foregroundColor: Colors.black,
+          disabledBackgroundColor: AuthColors.button.withValues(alpha: 0.65),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        child: Text(
-          text,
-          style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w600),
-        ),
+        child: loading
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.black,
+                ),
+              )
+            : Text(
+                text,
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
       ),
     );
   }
 }
 
-/// "Remember me" / "I agree to the terms" row under the card.
 class AuthSwitchRow extends StatelessWidget {
   const AuthSwitchRow({
     super.key,
@@ -347,4 +357,3 @@ class AuthSwitchRow extends StatelessWidget {
     );
   }
 }
-
