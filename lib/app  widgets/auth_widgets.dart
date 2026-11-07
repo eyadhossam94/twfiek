@@ -28,7 +28,7 @@ class AuthValidators {
 
   static String? email(String? v) {
     if (v == null || v.trim().isEmpty) return 'Enter your email';
-    final ok = RegExp(r'^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$').hasMatch(v.trim());
+    final ok = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(v.trim());
     return ok ? null : 'Enter a valid email';
   }
 }
