@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "878191664792",
+    "project_id": "el-twfiek",
+    "storage_bucket": "el-twfiek.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878191664792:android:aee1c3fa5927bf43217aed",
+        "android_client_info": {
+          "package_name": "com.example.twfiek"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2-Bzqx9k95jVfr_jc0CGanfc-003DAG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
