@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:twfiek/auth_service.dart';
 import 'package:twfiek/screen/SplashScreen.dart';
 
-import 'firebase_options.dart';
+import 'package:twfiek/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
